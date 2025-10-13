@@ -30,38 +30,38 @@
 
 ### 1. 安装依赖
 
-\`\`\`bash
+```bash
 npm install
-\`\`\`
+```
 
 ### 2. 配置环境变量
 
 复制 `.env.local.example` 为 `.env.local` 并填写配置：
 
-\`\`\`bash
+```bash
 cp .env.local.example .env.local
-\`\`\`
+```
 
 访问 [Giscus 官网](https://giscus.app/) 获取评论系统配置。
 
 ### 3. 启动开发服务器
 
-\`\`\`bash
+```bash
 npm run dev
-\`\`\`
+```
 
 访问 [http://localhost:3000](http://localhost:3000) 查看网站。
 
 ### 4. 构建生产版本
 
-\`\`\`bash
+```bash
 npm run build
 npm start
-\`\`\`
+```
 
 ## 项目结构
 
-\`\`\`
+```
 ├── app/                    # Next.js App Router
 │   ├── page.tsx           # 首页
 │   ├── posts/             # 文章路由
@@ -87,7 +87,7 @@ npm start
 ├── public/                # 静态资源
 │   └── images/            # 图片
 └── README.md             # 说明文档
-\`\`\`
+```
 
 ## 写作指南
 
@@ -100,7 +100,7 @@ npm start
 
 ### Frontmatter 格式
 
-\`\`\`yaml
+```yaml
 ---
 title: "文章标题"
 date: "2025-01-15"
@@ -108,7 +108,7 @@ tags: ["标签1", "标签2"]
 cover: "/images/covers/image.jpg"
 summary: "文章摘要，用于卡片展示和 SEO"
 ---
-\`\`\`
+```
 
 ### Markdown 功能
 
@@ -144,13 +144,13 @@ summary: "文章摘要，用于卡片展示和 SEO"
 
 编辑 `tailwind.config.ts` 中的颜色配置：
 
-\`\`\`typescript
+```typescript
 colors: {
   primary: {
     // 你的主色调
   },
 }
-\`\`\`
+```
 
 ### 修改个人信息
 
