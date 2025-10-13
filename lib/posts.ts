@@ -28,7 +28,6 @@ export function getPostBySlug(slug: string): Post {
     summary: data.summary || "",
     content,
     readingTime: calculateReadingTime(content),
-    views: data.views || 0,
   };
 }
 
@@ -45,7 +44,6 @@ export function getAllPosts(): PostMetadata[] {
         cover: post.cover,
         summary: post.summary,
         readingTime: post.readingTime,
-        views: post.views,
       };
     })
     .sort((a, b) => (a.date > b.date ? -1 : 1));

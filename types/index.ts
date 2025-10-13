@@ -7,7 +7,6 @@ export interface Post {
   summary: string;
   content: string;
   readingTime?: string;
-  views?: number;
 }
 
 export interface PostMetadata {
@@ -18,7 +17,6 @@ export interface PostMetadata {
   cover?: string;
   summary: string;
   readingTime?: string;
-  views?: number;
 }
 
 export interface TableOfContentsItem {
