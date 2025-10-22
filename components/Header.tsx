@@ -105,10 +105,11 @@ export function Header() {
               首页
             </Link>
             <Link
-              href="/tags"
-              className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+              href="/ai-blog"
+              className="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors flex items-center gap-1"
             >
-              分类
+              <span>🤖</span>
+              <span>AI博客</span>
             </Link>
             <Link
               href="/about"
@@ -174,11 +175,12 @@ export function Header() {
                 首页
               </Link>
               <Link
-                href="/tags"
+                href="/ai-blog"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+                className="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center gap-2"
               >
-                分类
+                <span>🤖</span>
+                <span>AI博客</span>
               </Link>
               <Link
                 href="/about"

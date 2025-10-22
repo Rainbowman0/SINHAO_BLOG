@@ -1,0 +1,83 @@
+name: Generate AI Blog
+
+on:
+  schedule:
+    - cron: '0 1 * * *' # 每天北京时间 09:00
+  workflow_dispatch:
+    inputs:
+      publish_immediately:
+        description: 'Publish immediately (remove draft status)'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Create .env.local
+        run: |
+          echo "TIANAPI_KEY=${{ secrets.TIANAPI_KEY }}" >> .env.local
+          echo "QWEN_API_KEY=${{ secrets.QWEN_API_KEY }}" >> .env.local
+          echo "KWAI_KOLORS_API_KEY=${{ secrets.KWAI_KOLORS_API_KEY }}" >> .env.local
+
+      - name: Generate AI blog post
+        run: npm run generate:ai-blog
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if [[ -n $(git status --porcelain content/ai-posts/ai-blog-*.md public/images/ai-covers) ]]; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Remove draft status (if requested)
+        if: steps.check_changes.outputs.has_changes == 'true' && github.event.inputs.publish_immediately == 'true'
+        run: |
+          TODAY=$(date +%Y-%m-%d)
+          FILE="content/ai-posts/ai-blog-${TODAY}.md"
+          if [ -f "$FILE" ]; then
+            sed -i '/^draft: true$/d' "$FILE"
+          fi
+
+      - name: Commit and push changes
+        if: steps.check_changes.outputs.has_changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add content/ai-posts/ai-blog-*.md public/images/ai-covers
+          STATUS_LABEL=$([ "${{ github.event.inputs.publish_immediately }}" = "true" ] && echo "已发布" || echo "草稿")
+          git commit -m "🤖 AI blog - $(date +%Y-%m-%d) [${STATUS_LABEL}]"
+          git push
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## AI Blog Generation Summary" >> $GITHUB_STEP_SUMMARY
+          if [[ "${{ steps.check_changes.outputs.has_changes }}" == "true" ]]; then
+            echo "✅ **Status**: Successfully generated and committed" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "ℹ️ **Status**: No changes (generation may have failed)" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "🕒 **Generated at**: $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
