@@ -72,13 +72,14 @@ export function getAllAIPosts(): PostMetadata[] {
         return null;
       }
     })
-    .filter((post): post is PostMetadata & { draft?: boolean } => post !== null)
+    .filter((post): post is NonNullable<typeof post> => post !== null)
     .filter((post) => {
       if (process.env.NODE_ENV === "production") {
         return !post.draft;
       }
       return true;
     })
+    .map(({ draft, ...metadata }) => metadata)
     .sort((a, b) => (a.date > b.date ? -1 : 1));
 
   return posts;
