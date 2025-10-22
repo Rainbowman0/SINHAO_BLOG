@@ -34,7 +34,7 @@ export function generateDateString(): string {
 export function buildAIPost(
   content: GeneratedContent,
   news: FetchedNews,
-  isDraft: boolean = true,
+  isDraft: boolean = false,
   cover: string = '',
   references: NewsReference[] = [],
   slugOverride?: string
@@ -71,10 +71,6 @@ function buildFrontmatter(post: AIPost): string {
   }
 
   lines.push(`summary: "${escapeQuotes(post.summary)}"`);
-
-  if (post.isDraft) {
-    lines.push('draft: true');
-  }
 
   lines.push('---');
   return lines.join('\n');
@@ -224,14 +220,8 @@ export function publishAIBlogPost(
     return false;
   }
 
-  try {
-    const content = fs.readFileSync(filePath, 'utf8');
-    const updated = content.replace(/^draft:\s*true\r?\n?/m, '');
-    fs.writeFileSync(filePath, updated, 'utf8');
-    console.log(`[post-builder] Published: ${slug}.md`);
-    return true;
-  } catch (error) {
-    console.error(`[post-builder] Failed to publish ${slug}.md:`, error);
-    return false;
-  }
+  console.warn(
+    `[post-builder] publishAIBlogPost is deprecated because posts are now published immediately.`
+  );
+  return true;
 }

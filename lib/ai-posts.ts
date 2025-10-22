@@ -65,7 +65,6 @@ export function getAllAIPosts(): PostMetadata[] {
           cover: post.cover,
           summary: post.summary,
           readingTime: post.readingTime,
-          draft: data.draft || false,
         };
       } catch (error) {
         console.error(`Error reading AI post ${slug}:`, error);
@@ -73,13 +72,6 @@ export function getAllAIPosts(): PostMetadata[] {
       }
     })
     .filter((post): post is NonNullable<typeof post> => post !== null)
-    .filter((post) => {
-      if (process.env.NODE_ENV === "production") {
-        return !post.draft;
-      }
-      return true;
-    })
-    .map(({ draft, ...metadata }) => metadata)
     .sort((a, b) => (a.date > b.date ? -1 : 1));
 
   return posts;
