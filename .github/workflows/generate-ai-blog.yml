@@ -1,8 +1,8 @@
-name: Generate AI Blog
+﻿name: Generate AI Blog
 
 on:
   schedule:
-    - cron: '0 1 * * *' # 每天北京时间 09:00
+    - cron: '35 11 * * *' # 每天北京时间 19:35
   workflow_dispatch:
     inputs:
       publish_immediately:
@@ -22,6 +22,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
+          fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
@@ -35,9 +36,11 @@ jobs:
 
       - name: Create .env.local
         run: |
-          echo "TIANAPI_KEY=${{ secrets.TIANAPI_KEY }}" >> .env.local
-          echo "QWEN_API_KEY=${{ secrets.QWEN_API_KEY }}" >> .env.local
-          echo "KWAI_KOLORS_API_KEY=${{ secrets.KWAI_KOLORS_API_KEY }}" >> .env.local
+          cat <<'EOF' > .env.local
+          TIANAPI_KEY=${{ secrets.TIANAPI_KEY }}
+          QWEN_API_KEY=${{ secrets.QWEN_API_KEY }}
+          KWAI_KOLORS_API_KEY=${{ secrets.KWAI_KOLORS_API_KEY }}
+          EOF
 
       - name: Generate AI blog post
         run: npm run generate:ai-blog
@@ -45,7 +48,7 @@ jobs:
       - name: Check for changes
         id: check_changes
         run: |
-          if [[ -n $(git status --porcelain content/ai-posts/ai-blog-*.md public/images/ai-covers) ]]; then
+          if [[ -n $(git status --porcelain content/ai-posts/ public/images/ai-covers/) ]]; then
             echo "has_changes=true" >> $GITHUB_OUTPUT
           else
             echo "has_changes=false" >> $GITHUB_OUTPUT
@@ -65,8 +68,12 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add content/ai-posts/ai-blog-*.md public/images/ai-covers
-          STATUS_LABEL=$([ "${{ github.event.inputs.publish_immediately }}" = "true" ] && echo "已发布" || echo "草稿")
+          git add content/ai-posts public/images/ai-covers
+          if [ "${{ github.event.inputs.publish_immediately }}" = "true" ]; then
+            STATUS_LABEL="已发布"
+          else
+            STATUS_LABEL="草稿"
+          fi
           git commit -m "🤖 AI blog - $(date +%Y-%m-%d) [${STATUS_LABEL}]"
           git push
 
