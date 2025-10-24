@@ -2,7 +2,7 @@
 
 on:
   schedule:
-    - cron: '35 11 * * *' # 每天北京时间 19:35
+    - cron: '0 23 * * *' # 每天北京时间 07:00
   workflow_dispatch:
     inputs:
       publish_immediately:
