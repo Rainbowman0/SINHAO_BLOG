@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="72" ry="72" fill="#fdf3e7"/>
+  <g transform="translate(256 256)">
+    <path
+      d="M 0,-136 Q -3,-68 -8,0 Q -12,68 -16,136"
+      stroke="#D4A574"
+      stroke-width="28"
+      fill="none"
+      stroke-linecap="round"
+    />
+    <path
+      d="M -8,-102 Q -60,-95 -85,-85 M -8,-68 Q -68,-60 -93,-50 M -8,-34 Q -72,-25 -98,-15 M -10,0 Q -77,8 -102,18 M -12,34 Q -77,43 -98,53 M -14,68 Q -72,77 -93,87"
+      stroke="#B8866F"
+      stroke-width="16"
+      fill="none"
+      stroke-linecap="round"
+      opacity="0.8"
+    />
+    <path
+      d="M -8,-102 Q 44,-95 69,-85 M -8,-68 Q 52,-60 77,-50 M -8,-34 Q 56,-25 82,-15 M -10,0 Q 61,8 86,18 M -12,34 Q 61,43 82,53 M -14,68 Q 56,77 77,87"
+      stroke="#B8866F"
+      stroke-width="16"
+      fill="none"
+      stroke-linecap="round"
+      opacity="0.8"
+    />
+    <circle cx="-16" cy="145" r="38" fill="#D4A574" opacity="0.6"/>
+    <circle cx="-16" cy="145" r="20" fill="#B8866F"/>
+  </g>
+</svg>
